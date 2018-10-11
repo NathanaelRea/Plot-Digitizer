@@ -1,38 +1,60 @@
 # Plot-Digitizer
-Get very accurate plot data by using an svg file that was traced with bezier curves
+Trace data plots with SVG editor.
+
+Plot-Digitizer is a basic tool for converting a raster plot into
+plain text data points.
 
 
-This is just a basic tool to be able to convert an image into a plot.
+## Usage
+
+In this example I will trace the density of states of a 16-site
+Hubbard model from Elbio Dagotto, 1994.
+
+1. Import the plot you would like to trace into your SVG editor (for
+example, Inkscape). Set the reference points by drawing a rectangle
+(see photo, green). Draw a line following the plot using the Bezier
+tool (see photo, red).
+
+![SVG](docs/svg_input.png)
+
+![Closeup](docs/svg_closeup.png)
+
+CAUTION:
+* The SVG file must contain exactly one rectangle and one Bezier path.
+* Do not use any snaps when creating the path.
+
+REMARKS:
+* When importing the raster, it is enough to only rotate and deskew.
+  There is no need to stretch, adjust image boundaries etc.
+* The rectangle does not have to cover the whole plot. Put its
+  corners in the points for which you know the exact values.
+* To improve precision it is recommended to:
+  make the line half-transparent and with width and joint style
+  matching those of the plot;
+  avoid using Bezier curves and instead trace by hand, because this
+  yields the best detail per number of points.
+* An external tool must be used to convert the output to polar
+  coordinates, nonlinear or logarithmic scale.
+
+2. Save the SVG file and run the tool. I have saved it as `input.svg`
+   and want the output in `PES.txt`.
+
+    $ svg_converter.py input.svg -5.0 5.0 0.0 0.2 > PES.txt
+
+The 5 arguments are the following.
+1. Name of the SVG file.
+2. Minimum X coordinate of the reference rectangle.
+3. Maximum X coordinate of the reference rectangle.
+4. Minimum Y coordinate of the reference rectangle.
+5. Maximum Y coordinate of the reference rectangle.
+
+Extracted data points are printed to the standard output as tab-separated list, which can be viewed in e.g. gnuplot.
+
+![Output](docs/output.png)
 
 
-* Insert the image into inkscape and draw bezier curves around it.
-![Closeup](https://raw.githubusercontent.com/OldOxygen/Plot-Digitizer/master/docs/close.png)
+## Legal
 
-Here is a completed example:
+Distributed under the terms of GNU GPLv3.
 
-![Bezier Nodes](https://raw.githubusercontent.com/OldOxygen/Plot-Digitizer/master/docs/all_nodes.png)
-
-*As you can see, it is made from two lines. This is okay, but the script will place the points right after one another in the csv, and so if they are not next to one another, there will be a line connecting them when plotted*
-
-* Select all the nodes, and click the "add more in-between" button a few times until satisfied.
-![More Nodes](https://raw.githubusercontent.com/OldOxygen/Plot-Digitizer/master/docs/more_nodes.png)
-
-* Add three circles, one for origin, one for xmax, and one for ymax.
-![Extents](https://raw.githubusercontent.com/OldOxygen/Plot-Digitizer/master/docs/extents.png)
-
-* Save the file, and run the python script in the same directory as it.
-It will prompt for the "real" distance between the circles for x and y directions. This will be the numbers on the actual plot/picture itself. In this example, they were 7" and 250lbs, without units.
-
-The script makes a csv of the nodes that were on the bezier curve.
-
-Here is the sample output. The left is a simple plot example in excel. The right is a bit more clean in R.
-
-![Output](https://raw.githubusercontent.com/OldOxygen/Plot-Digitizer/master/docs/output.png)
-
-*With black as test data from Oesterle et al (1979) B9 wall sample, and blue as model results (if you were curious)*
-
-I would like it if adding nodes in-between was not needed, however I'm not sure how bezier curves work/ or are saved, and so I don't know how to implement it.
-
-Since I'm new, if there are any changes that might help me get better feel free to correct me, and I'll try to learn form them and implement them.
-
-Thanks!
+Copyright (c) [OldOxygen](https://github.com/OldOxygen), [Michael Danilov](https://github.com/mike402), 2018
