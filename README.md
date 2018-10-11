@@ -19,10 +19,6 @@ tool (see photo, red).
 
 ![Closeup](docs/svg_closeup.png)
 
-CAUTION:
-* The SVG file must contain exactly one rectangle and one Bezier path.
-* Do not use any snaps when creating the path.
-
 REMARKS:
 * When importing the raster, it is enough to only rotate and deskew.
   There is no need to stretch, adjust image boundaries etc.
@@ -41,14 +37,17 @@ REMARKS:
 
     $ svg_converter.py input.svg -5.0 5.0 0.0 0.2 > PES.txt
 
-The 5 arguments are the following.
+The 7 arguments are the following.
 1. Name of the SVG file.
 2. Minimum X coordinate of the reference rectangle.
 3. Maximum X coordinate of the reference rectangle.
 4. Minimum Y coordinate of the reference rectangle.
 5. Maximum Y coordinate of the reference rectangle.
+6. Delimiter (default tab-separated)
+7. Name of output file (if given)
 
-Extracted data points are printed to the standard output as tab-separated list, which can be viewed in e.g. gnuplot.
+
+Extracted data points are printed to a variety of ways. It can output to file or stdout, as csv or separated by any given delimiter.
 
 ![Output](docs/output.png)
 
