@@ -15,9 +15,9 @@ example, Inkscape). Set the reference points by drawing a rectangle
 (see photo, green). Draw a line following the plot using the Bezier
 tool (see photo, red).
 
-![SVG](docs/svg_input.png)
+![SVG](docs/Pic1.png)
 
-![Closeup](docs/svg_closeup.png)
+![Closeup](docs/Pic2.png)
 
 2. Save the SVG file and run the tool. I have saved it as `input.svg`
    and want the output in `PES.txt`.
@@ -36,7 +36,11 @@ There are a total of 8 arguments, 3 needed and 5 optional
 
 If the needed arguments are not given when run, it will prompt the user for those inputs.
 
-![Output](docs/output.png)
+![Output](docs/Pic3.png)
+
+![Output](docs/Pic4.png)
+
+![Output](docs/Pic5.png)
 
 **REMARKS:**
 * When importing the raster, it is enough to only rotate and deskew.
