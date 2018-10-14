@@ -1,57 +1,57 @@
 # Plot-Digitizer
-Trace data plots with SVG editor.
 
 Plot-Digitizer is a basic tool for converting a raster plot into
 plain text data points.
 
+It is necessary to trace the plot with a vector program. This tool will calculate points along the bezier curve, and use the scales provided to output the points as (x,y) coordinates in any form.
 
 ## Usage
 
-In this example I will trace the density of states of a 16-site
-Hubbard model from Elbio Dagotto, 1994.
+In this example I will trace the experimental test data from Oesterle et al (1979) B9 wall sample.
 
 1. Import the plot you would like to trace into your SVG editor (for
 example, Inkscape). Set the reference points by drawing a rectangle
 (see photo, green). Draw a line following the plot using the Bezier
 tool (see photo, red).
 
-![SVG](docs/svg_input.png)
+![SVG](docs/Pic1.png)
 
-![Closeup](docs/svg_closeup.png)
+![Closeup](docs/Pic2.png)
 
-CAUTION:
-* The SVG file must contain exactly one rectangle and one Bezier path.
-* Do not use any snaps when creating the path.
+2. Save the SVG file and run the tool. I have saved it as `input.svg`
+   and want the output in `out.csv` with 1000 data points along the path.
 
-REMARKS:
+    $ svg_converter.py -f input.svg -o out.csv -dx 6 -dy 250 -div 100
+
+There are a total of 8 arguments, 4 essential and 4 optional
+1. Name of the SVG file [-f]
+2. Change of X in the reference rectangle [-dx]
+3. Change of Y in the reference rectangle [-dy]
+4. Number of divisons (output points) [-div]
+5. Name of the output file [-o] (optional, default = stdout)
+6. X origin of reference rectangle [-xo] (optional, default = 0)
+7. Y origin of reference rectangle [-yo] (optional, default = 0)
+8. Delimiter of output [-div] (optional, default = ',')
+
+If the needed arguments are not given when run, it will prompt the user for those inputs as seen in the examples below.
+
+![Example 1](docs/Pic3.png)
+
+![Example 2](docs/Pic4.png)
+
+And finally, an example of the -div 1000 output plotted.
+
+![Plot](docs/Pic5.png)
+
+**REMARKS:**
 * When importing the raster, it is enough to only rotate and deskew.
   There is no need to stretch, adjust image boundaries etc.
 * The rectangle does not have to cover the whole plot. Put its
   corners in the points for which you know the exact values.
-* To improve precision it is recommended to:
-  make the line half-transparent and with width and joint style
-  matching those of the plot;
-  avoid using Bezier curves and instead trace by hand, because this
-  yields the best detail per number of points.
+* To improve precision it is recommended to make the line half-transparent
+  and with width and joint style matching those of the plot
 * An external tool must be used to convert the output to polar
   coordinates, nonlinear or logarithmic scale.
-
-2. Save the SVG file and run the tool. I have saved it as `input.svg`
-   and want the output in `PES.txt`.
-
-    $ svg_converter.py input.svg -5.0 5.0 0.0 0.2 > PES.txt
-
-The 5 arguments are the following.
-1. Name of the SVG file.
-2. Minimum X coordinate of the reference rectangle.
-3. Maximum X coordinate of the reference rectangle.
-4. Minimum Y coordinate of the reference rectangle.
-5. Maximum Y coordinate of the reference rectangle.
-
-Extracted data points are printed to the standard output as tab-separated list, which can be viewed in e.g. gnuplot.
-
-![Output](docs/output.png)
-
 
 ## Legal
 
