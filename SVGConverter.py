@@ -18,7 +18,8 @@ from xml.dom import minidom
 from svg.path import parse_path
 from argparse import ArgumentParser
     
-def svg_to_csv(filename, num_div, r_x_delta, r_y_delta, r_o_x = 0, r_o_y = 0):
+def svg_to_csv(filename, dilimeter, num_div, r_x_delta, r_y_delta,
+               r_o_x = 0, r_o_y = 0):
     paths = svg_path_parse(filename)
     [svg_x, svg_y, x_scale, y_scale] = svg_scale(filename, r_x_delta, r_y_delta)
 
@@ -29,9 +30,8 @@ def svg_to_csv(filename, num_div, r_x_delta, r_y_delta, r_o_x = 0, r_o_y = 0):
             x = (cur_complex.real + r_o_x - svg_x) * x_scale
             # I actually don't know why this works for y, found by trial & error
             y = r_y_delta - (cur_complex.imag + r_o_y - svg_y) * y_scale
-            out.append("{},{}".format(x,y))
-        out.append("")
-    
+            out.append("{}{}{}".format(x,dilimeter,y))
+        out.append('')
     return out
 
 # grabs all paths in svg with attribute 'd'
@@ -68,22 +68,21 @@ def svg_scale(filename, r_x_delta, r_y_delta):
 # Selection function
 def ui_selection(header, options, fltr="", quick_select=""):
 	# use options for filetype usually, just a quick filter
-	##print(options)
 	options = [i for i in options if fltr in i.lower()]
-	# optional quick_select to get a common file name like Material_Input in Material_Input_v3.xlsx
-	##print(options)
+	# optional quick_select to get a common file name
 	if quick_select != "":
 		options = [i for i in options if quick_select in i.lower()]
 	l = len(options)
-	##p(options)
 	choices = list(map(str, range(1,l+1)))
 	if l == 0: # quit if no files
 		print(header)
-		# I just realized that this will probably also trigger if quick_select not found
-		Exit("There are no selections possible with '{}' or '{}'".format(fltr, quick_select) ,30)
+		# This will probably also trigger if quick_select not found
+		Exit("There are no selections possible with '{}' or '{}'".format(
+            fltr, quick_select) ,30)
 	elif l == 1: # return if only one option
 		print(header)
-		print("There was only one option ({}),\n	so I picked it for you".format(options[0]))
+		print("There was only one option ({}),
+            \n	so I picked it for you".format(options[0]))
 		return(options[0])
 	while True:
 		print(header)
@@ -118,7 +117,7 @@ if __name__ == "__main__":
                         help="read SVG FILE", metavar="FILE")
     parser.add_argument("-o", "--output", dest="output_file", default=None,
                         help="output FILE", metavar="FILE")
-    parser.add_argument("-div", dest="div", default=2, type=int,
+    parser.add_argument("-div", dest="div", default=None, type=int,
                         help="number of points along path to output")
     parser.add_argument("-dx", "--deltax", dest="dx", default=None, type=float,
                         help="actual x change in plot")
@@ -128,17 +127,29 @@ if __name__ == "__main__":
                         help="x value start of origin")
     parser.add_argument("-yo", "--yorigin", dest="yo", default=0, type=float,
                         help="y vlaue start of origin")
+    parser.add_argument("-dil", "--dilimeter", dest="dil", default=',',type=str,
+                        help="dilimeter of (x,y) output")
     args = parser.parse_args()
 
     if args.filename == None:
         files = os.listdir()
-        args.filename = ui_selection("Pick an svg file to parse:", files, "svg")
+        args.filename = ui_selection("Pick an svg file to parse:",files,".svg")
     if args.dx == None:
-        args.dx = input("Actual X change of plot: ")
+        args.dx = float(input("Actual X change of plot: "))
     if args.dy == None:
-        args.dy = input("Actual Y change of plot: ")
-    
-    out = svg_to_csv(args.filename, args.div, args.dx, args.dy, args.xo, args.yo)
+        args.dy = float(input("Actual Y change of plot: "))
+    if args.div == None:
+        args.div = int(input("Number of Data Points: "))
+
+    # bash interperests \t as t
+    # just want easy user input for likely dilimeter chars
+    if args.dil == 't':
+        args.dil = '\t'
+    elif args.dil == 'n':
+        args.dil = '\n'
+
+    out = svg_to_csv(args.filename, args.dil, args.div, 
+                     args.dx, args.dy, args.xo, args.yo)
     
     if args.output_file == None:
         for line in out:
