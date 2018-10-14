@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-# svg_converter.py -f <svgfile> -o <outfile> <xmin> <xmax> <ymin> <ymax>
+# For help with arguments:
+# SVGConverter.py -h
 #
 # Convert an SVG path and rectangle to csv type output of notes
 #
@@ -21,6 +22,7 @@ from argparse import ArgumentParser
 def svg_to_csv(filename, dilimeter, num_div, r_x_delta, r_y_delta,
                r_o_x = 0, r_o_y = 0):
     paths = svg_path_parse(filename)
+
     [svg_x, svg_y, x_scale, y_scale] = svg_scale(filename, r_x_delta, r_y_delta)
 
     out = []
@@ -35,7 +37,7 @@ def svg_to_csv(filename, dilimeter, num_div, r_x_delta, r_y_delta,
     return out
 
 # grabs all paths in svg with attribute 'd'
-# then parses with svg.path
+# then parses with svg.path into bezier curve
 def svg_path_parse(filename):
     # https://stackoverflow.com/questions/15857818/python-svg-parser#15857847
     # icktoofay
@@ -81,8 +83,8 @@ def ui_selection(header, options, fltr="", quick_select=""):
             fltr, quick_select) ,30)
 	elif l == 1: # return if only one option
 		print(header)
-		print("There was only one option ({}),
-            \n	so I picked it for you".format(options[0]))
+		print("There was only one option ({})".format(options[0]))
+		print("\n\tso I picked it for you")
 		return(options[0])
 	while True:
 		print(header)
@@ -102,7 +104,7 @@ def write_file(filename, data):
 	with open(filename, 'w') as f:
 		f.write(data)
 
-# joint list into a string
+# join list into a string
 def j_l(l, space=" ", round_dec=None):
 	if round_dec == None:
 		return space.join(map(str,l))
@@ -110,6 +112,11 @@ def j_l(l, space=" ", round_dec=None):
 		l = [round(e,round_dec) for e in l]
 		return space.join(map(str,l))
 		
+# Exit after specific time, with exit message
+def Exit(exit_str, n):
+	print(exit_str)
+	time.sleep(n)
+	raise SystemExit
 
 if __name__ == "__main__":
     parser = ArgumentParser()
