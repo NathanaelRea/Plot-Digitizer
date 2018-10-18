@@ -21,7 +21,7 @@ tool (see photo, red).
 2. Save the SVG file and run the tool. I have saved it as `input.svg`
    and want the output in `out.csv` with 1000 data points along the path.
 
-    $ svg_converter.py -f input.svg -o out.csv -dx 6 -dy 250 -div 100
+    `$ SVGConverter.py -f input.svg -o out.csv -dx 6 -dy 250 -div 1000`
 
 There are a total of 8 arguments, 4 essential and 4 optional
 1. Name of the SVG file [-f]
@@ -44,14 +44,11 @@ And finally, an example of the -div 1000 output plotted.
 ![Plot](docs/Pic5.png)
 
 **REMARKS:**
-* When importing the raster, it is enough to only rotate and deskew.
-  There is no need to stretch, adjust image boundaries etc.
-* The rectangle does not have to cover the whole plot. Put its
-  corners in the points for which you know the exact values.
-* To improve precision it is recommended to make the line half-transparent
-  and with width and joint style matching those of the plot
-* An external tool must be used to convert the output to polar
-  coordinates, nonlinear or logarithmic scale.
+* Multiple paths can be used in the same file, the export will separate them by newline.
+* When importing the raster, it is enough to only rotate and deskew. There is no need to stretch, adjust image boundaries etc.
+* The rectangle does not have to cover the whole plot. Put its corners in the points for which you know the exact values.
+* To improve precision it is recommended to make the line half-transparent and with width and joint style matching those of the plot
+* An external tool must be used to convert the output to polar coordinates, nonlinear or logarithmic scale.
 
 ## Legal
 
