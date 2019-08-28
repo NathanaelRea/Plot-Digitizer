@@ -5,7 +5,7 @@ plain text data points.
 
 It is necessary to trace the plot with a vector program. This tool will calculate points along the Bezier curve, and use the scales provided to output the points as (x,y) coordinates in csv format.
 
-## Usage
+## Usageasdfasdfasdf
 
 In this example I will trace the experimental test data from Oesterle et al (1979) B9 wall sample.
 
